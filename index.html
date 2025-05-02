@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Diagnósticos Iniciales Kiwa - Musicala</title>
+  <style>
+    :root {
+      --color-arte: #6a1b9a;
+      --color-danza: #f57c00;
+      --color-teatro: #0277bd;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+  font-family: 'Segoe UI', sans-serif;
+  background-color: #f4f6f9;
+  color: #333;
+  font-size: 20px; /* Aumentamos el tamaño base */
+    }
+
+    header {
+    background-color: #0056b3;
+    color: white;
+    padding: 30px 20px 30px 130px; /* más espacio por logo más grande */
+    position: relative;
+    text-align: left;
+    }
+
+    header img.logo {
+    position: absolute;
+    top: 35px;
+    left: 20px;
+    width: 100px; /* logo más grande */
+    border-radius: 8px;
+    box-shadow: 0 0 6px rgba(0,0,0,0.3);
+    }
+
+    header h1 {
+    font-size: 34px; /* más grande */
+    margin-bottom: 10px;
+    }
+
+    header p {
+    font-size: 20px; /* más grande */
+    color: #dbe6f5;
+    }
+
+    .contenedor {
+      max-width: 1200px;
+      margin: 40px auto;
+      padding: 0 20px;
+    }
+
+    .filtros {
+      margin-bottom: 30px;
+      text-align: left;
+    }
+
+    .filtros button {
+      background-color: #0056b3;
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      margin-right: 10px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 16px;
+      transition: background-color 0.3s ease;
+    }
+
+    .filtros button:hover,
+    .filtros button.active {
+      background-color: #ff6600;
+    }
+
+    .repositorio {
+      display: flex;
+      flex-direction: column;
+      gap: 30px;
+    }
+
+    .documento-ficha {
+      display: flex;
+      background-color: #ffffff;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      overflow: hidden;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: all 0.4s ease, transform 0.3s ease;
+      cursor: pointer;
+    }
+
+    .documento-ficha.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .documento-ficha:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+    }
+
+    .documento-ficha img {
+      width: 200px;
+      object-fit: cover;
+      background-color: #eee;
+      transition: transform 0.3s ease;
+    }
+
+    .documento-ficha:hover img {
+      transform: scale(1.05);
+    }
+
+    .contenido {
+      padding: 20px;
+      flex: 1;
+      text-align: left;
+      position: relative;
+    }
+
+    .contenido h2 {
+      font-size: 22px;
+      margin-bottom: 10px;
+    }
+
+    .contenido p {
+      margin: 6px 0;
+      font-size: 17px;
+    }
+
+    .contenido a,
+    .contenido button.descargar {
+      display: inline-block;
+      margin-top: 10px;
+      background-color: #ff6600;
+      color: white;
+      padding: 10px 18px;
+      border-radius: 5px;
+      text-decoration: none;
+      font-weight: bold;
+      font-size: 16px;
+      margin-right: 10px;
+      border: none;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .contenido a:hover,
+    .contenido button.descargar:hover {
+      background-color: #e65500;
+    }
+
+    /* Colores por categoría */
+    .documento-ficha.arte { border-left: 8px solid var(--color-arte); }
+    .documento-ficha.danza { border-left: 8px solid var(--color-danza); }
+    .documento-ficha.teatro { border-left: 8px solid var(--color-teatro); }
+
+    footer {
+      text-align: center;
+      padding: 25px;
+      font-size: 16px;
+      color: #777;
+    }
+
+    @media (max-width: 768px) {
+      .documento-ficha {
+        flex-direction: column;
+      }
+
+      .documento-ficha img {
+        width: 100%;
+      }
+
+      header {
+        padding: 20px;
+        text-align: center;
+      }
+
+      header img.logo {
+        position: static;
+        margin: 0 auto 10px;
+      }
+
+      .filtros {
+        text-align: center;
+      }
+
+      .contenido {
+        text-align: center;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <img class="logo" src="https://static.wixstatic.com/media/85afce_3adb3865c88a492b93a8bf2dc69049c3~mv2.png" alt="Logo Musicala">
+  <h1>Diagnósticos Artísticos Iniciales Kiwa - Musicala</h1>
+  <p>Consulta los diagnósticos por disciplina y centro educativo</p>
+</header>
+
+<div class="contenedor">
+
+  <div class="filtros">
+    <button class="filter-btn active" data-filtro="todos">Todos</button>
+    <button class="filter-btn" data-filtro="arte">Artes Plásticas</button>
+    <button class="filter-btn" data-filtro="danza">Danza</button>
+    <button class="filter-btn" data-filtro="teatro">Teatro</button>
+    <button class="filter-btn" data-filtro="porras">Porras</button>
+  </div>
+
+  <div class="repositorio">
+
+    <!-- Centro: Acapulco -->
+    <div class="documento-ficha danza show">
+      <img src="Diagnóstico Danzas.jpg" alt="Diagnóstico Danzas">
+      <div class="contenido">
+        <h2>Diagnóstico Danzas - Acapulco</h2>
+        <p><strong>Docente:</strong> Ivonne Moreno</p>
+        <p><strong>Centro:</strong> Acapulco</p>
+        <p><strong>Resumen:</strong> [Resumen del diagnóstico aquí]</p>
+        <a href="URL_DEL_DOCUMENTO_3" target="_blank">📄 Ver</a>
+        <button class="descargar" onclick="window.open('URL_DEL_DOCUMENTO_3', '_blank')">⬇️ Descargar</button>
+      </div>
+    </div>
+  
+    <!-- Centro: Arroyo -->
+    <div class="documento-ficha danza show">
+      <img src="Diagnóstico Danzas.jpg" alt="Diagnóstico Danzas">
+      <div class="contenido">
+        <h2>Diagnóstico Danzas - Arroyo</h2>
+        <p><strong>Docente:</strong> Ivonne Moreno</p>
+        <p><strong>Centro:</strong> Arroyo</p>
+        <p><strong>Resumen:</strong> [Resumen...]</p>
+        <a href="https://drive.google.com/file/d/1OIXILypuvWsZNktGTTAvMxkkaWYqJl-U/view?usp=sharing" target="_blank">📄 Ver</a>
+        <a
+          class="descargar"
+          href="https://drive.google.com/uc?export=download&id=1OIXILypuvWsZNktGTTAvMxkkaWYqJl-U"
+          download="Diagnostico_Danzas_Arroyo.pdf"
+        >⬇️ Descargar</a>
+      </div>
+    </div>
+  
+    <div class="documento-ficha arte show">
+      <img src="Diagnóstico Artes plásticas.jpg" alt="Diagnóstico Artes Plásticas">
+      <div class="contenido">
+        <h2>Diagnóstico Artes Plásticas - Arroyo</h2>
+        <p><strong>Docente:</strong> Leydy Díaz</p>
+        <p><strong>Centro:</strong> Arroyo</p>
+        <p><strong>Resumen:</strong> [Resumen...]</p>
+        <a href="URL_DEL_DOCUMENTO_3" target="_blank">📄 Ver</a>
+        <button class="descargar" onclick="window.open('URL_DEL_DOCUMENTO_3', '_blank')">⬇️ Descargar</button>
+      </div>
+    </div>
+  
+    <div class="documento-ficha teatro show">
+      <img src="Diagnóstico Teatro.jpg" alt="Diagnóstico Teatro">
+      <div class="contenido">
+        <h2>Diagnóstico Teatro - Arroyo</h2>
+        <p><strong>Docente:</strong> Brenda Giraldo</p>
+        <p><strong>Centro:</strong> Arroyo</p>
+        <p><strong>Resumen:</strong> [Resumen...]</p>
+        <a href="URL_DEL_DOCUMENTO_3" target="_blank">📄 Ver</a>
+        <button class="descargar" onclick="window.open('URL_DEL_DOCUMENTO_3', '_blank')">⬇️ Descargar</button>
+      </div>
+    </div>
+  
+    <!-- Centro: Betania -->
+    <div class="documento-ficha danza show">
+      <img src="Diagnóstico Danzas.jpg" alt="Diagnóstico Danzas">
+      <div class="contenido">
+        <h2>Diagnóstico Danzas - Betania</h2>
+        <p><strong>Docente:</strong> Ivonne Moreno</p>
+        <p><strong>Centro:</strong> Betania</p>
+        <p><strong>Resumen:</strong> [Resumen...]</p>
+        <a href="URL_DEL_DOCUMENTO_3" target="_blank">📄 Ver</a>
+        <button class="descargar" onclick="window.open('URL_DEL_DOCUMENTO_3', '_blank')">⬇️ Descargar</button>
+      </div>
+    </div>
+  
+    <div class="documento-ficha arte show">
+      <img src="Diagnóstico Artes plásticas.jpg" alt="Diagnóstico Artes Plásticas">
+      <div class="contenido">
+        <h2>Diagnóstico Artes Plásticas - Betania</h2>
+        <p><strong>Docente:</strong> Santiago Gutiérrez</p>
+        <p><strong>Centro:</strong> Betania</p>
+        <p><strong>Resumen:</strong> [Resumen...]</p>
+        <a href="URL_DEL_DOCUMENTO_3" target="_blank">📄 Ver</a>
+        <button class="descargar" onclick="window.open('URL_DEL_DOCUMENTO_3', '_blank')">⬇️ Descargar</button>
+      </div>
+    </div>
+  
+    <div class="documento-ficha teatro show">
+      <img src="Diagnóstico Teatro.jpg" alt="Diagnóstico Teatro">
+      <div class="contenido">
+        <h2>Diagnóstico Teatro - Betania</h2>
+        <p><strong>Docente:</strong> Leydy Díaz</p>
+        <p><strong>Centro:</strong> Betania</p>
+        <p><strong>Resumen:</strong> [Resumen...]</p>
+        <a href="URL_DEL_DOCUMENTO_3" target="_blank">📄 Ver</a>
+        <button class="descargar" onclick="window.open('URL_DEL_DOCUMENTO_3', '_blank')">⬇️ Descargar</button>
+      </div>
+    </div>
+  
+    <!-- Jerusalén -->
+    <div class="documento-ficha danza show">
+      <img src="Diagnóstico Danzas.jpg" alt="Diagnóstico Danzas">
+      <div class="contenido">
+        <h2>Diagnóstico Danzas - Jerusalén</h2>
+        <p><strong>Docente:</strong> Ivonne Moreno</p>
+        <p><strong>Centro:</strong> Jerusalén</p>
+        <p><strong>Resumen:</strong> [Resumen...]</p>
+        <a href="URL_DEL_DOCUMENTO_3" target="_blank">📄 Ver</a>
+        <button class="descargar" onclick="window.open('URL_DEL_DOCUMENTO_3', '_blank')">⬇️ Descargar</button>
+      </div>
+    </div>
+  
+    <div class="documento-ficha arte show">
+      <img src="Diagnóstico Artes plásticas.jpg" alt="Diagnóstico Artes Plásticas">
+      <div class="contenido">
+        <h2>Diagnóstico Artes Plásticas - Jerusalén</h2>
+        <p><strong>Docente:</strong> Santiago Gutiérrez</p>
+        <p><strong>Centro:</strong> Jerusalén</p>
+        <p><strong>Resumen:</strong> [Resumen...]</p>
+        <a href="URL_DEL_DOCUMENTO_3" target="_blank">📄 Ver</a>
+        <button class="descargar" onclick="window.open('URL_DEL_DOCUMENTO_3', '_blank')">⬇️ Descargar</button>
+      </div>
+    </div>
+  
+    <div class="documento-ficha teatro show">
+      <img src="Diagnóstico Teatro.jpg" alt="Diagnóstico Teatro">
+      <div class="contenido">
+        <h2>Diagnóstico Teatro - Jerusalén</h2>
+        <p><strong>Docente:</strong> Brenda Giraldo</p>
+        <p><strong>Centro:</strong> Jerusalén</p>
+        <p><strong>Resumen:</strong> [Resumen...]</p>
+        <a href="URL_DEL_DOCUMENTO_3" target="_blank">📄 Ver</a>
+        <button class="descargar" onclick="window.open('URL_DEL_DOCUMENTO_3', '_blank')">⬇️ Descargar</button>
+      </div>
+    </div>
+  
+    <!-- Lucero -->
+    <div class="documento-ficha arte show">
+      <img src="Diagnóstico Artes plásticas.jpg" alt="Diagnóstico Artes Plásticas">
+      <div class="contenido">
+        <h2>Diagnóstico Artes Plásticas - Lucero</h2>
+        <p><strong>Docente:</strong> Santiago Gutiérrez</p>
+        <p><strong>Centro:</strong> Lucero</p>
+        <p><strong>Resumen:</strong> [Resumen...]</p>
+        <a href="URL_DEL_DOCUMENTO_3" target="_blank">📄 Ver</a>
+        <button class="descargar" onclick="window.open('URL_DEL_DOCUMENTO_3', '_blank')">⬇️ Descargar</button>
+      </div>
+    </div>
+  
+    <div class="documento-ficha teatro show">
+      <img src="Diagnóstico Teatro.jpg" alt="Diagnóstico Teatro">
+      <div class="contenido">
+        <h2>Diagnóstico Teatro - Lucero</h2>
+        <p><strong>Docentes:</strong> Brenda Giraldo y Thalia Sarmiento</p>
+        <p><strong>Centro:</strong> Lucero</p>
+        <p><strong>Resumen:</strong> [Resumen...]</p>
+        <a href="URL_DEL_DOCUMENTO_3" target="_blank">📄 Ver</a>
+        <button class="descargar" onclick="window.open('URL_DEL_DOCUMENTO_3', '_blank')">⬇️ Descargar</button>
+      </div>
+    </div>
+  
+    <!-- Padre Misericordioso A -->
+    <div class="documento-ficha danza show">
+      <img src="Diagnóstico Danzas.jpg" alt="Diagnóstico Danzas">
+      <div class="contenido">
+        <h2>Diagnóstico Danzas - Padre Misericordioso A</h2>
+        <p><strong>Docente:</strong> María Camila Pirajan</p>
+        <p><strong>Centro:</strong> Padre Misericordioso A</p>
+        <p><strong>Resumen:</strong> [Resumen...]</p>
+        <a href="URL_DEL_DOCUMENTO_3" target="_blank">📄 Ver</a>
+        <button class="descargar" onclick="window.open('URL_DEL_DOCUMENTO_3', '_blank')">⬇️ Descargar</button>
+      </div>
+    </div>
+  
+    <!-- Padre Misericordioso B -->
+    <div class="documento-ficha danza show">
+      <img src="Diagnóstico Danzas.jpg" alt="Diagnóstico Danzas">
+      <div class="contenido">
+        <h2>Diagnóstico Danzas - Padre Misericordioso B</h2>
+        <p><strong>Docente:</strong> María Camila Pirajan</p>
+        <p><strong>Centro:</strong> Padre Misericordioso B</p>
+        <p><strong>Resumen:</strong> [Resumen...]</p>
+        <a href="URL_DEL_DOCUMENTO_3" target="_blank">📄 Ver</a>
+        <button class="descargar" onclick="window.open('URL_DEL_DOCUMENTO_3', '_blank')">⬇️ Descargar</button>
+      </div>
+    </div>
+  
+    <div class="documento-ficha arte show">
+      <img src="Diagnóstico Artes plásticas.jpg" alt="Diagnóstico Artes Plásticas">
+      <div class="contenido">
+        <h2>Diagnóstico Artes Plásticas - Padre Misericordioso B</h2>
+        <p><strong>Docente:</strong> Santiago Gutiérrez</p>
+        <p><strong>Centro:</strong> Padre Misericordioso B</p>
+        <p><strong>Resumen:</strong> [Resumen...]</p>
+        <a href="URL_DEL_DOCUMENTO_3" target="_blank">📄 Ver</a>
+        <button class="descargar" onclick="window.open('URL_DEL_DOCUMENTO_3', '_blank')">⬇️ Descargar</button>
+      </div>
+    </div>
+  
+    <div class="documento-ficha teatro show">
+      <img src="Diagnóstico Teatro.jpg" alt="Diagnóstico Teatro">
+      <div class="contenido">
+        <h2>Diagnóstico Teatro - Padre Misericordioso B</h2>
+        <p><strong>Docente:</strong> Brenda Giraldo</p>
+        <p><strong>Centro:</strong> Padre Misericordioso B</p>
+        <p><strong>Resumen:</strong> [Resumen...]</p>
+        <a href="URL_DEL_DOCUMENTO_3" target="_blank">📄 Ver</a>
+        <button class="descargar" onclick="window.open('URL_DEL_DOCUMENTO_3', '_blank')">⬇️ Descargar</button>
+      </div>
+    </div>
+  
+    <!-- Santo Domingo -->
+    <div class="documento-ficha danza show">
+      <img src="Diagnóstico Danzas.jpg" alt="Diagnóstico Danzas">
+      <div class="contenido">
+        <h2>Diagnóstico Danzas - Santo Domingo</h2>
+        <p><strong>Docente:</strong> Ivonne Moreno</p>
+        <p><strong>Centro:</strong> Santo Domingo</p>
+        <p><strong>Resumen:</strong> [Resumen...]</p>
+        <a href="URL_DEL_DOCUMENTO_3" target="_blank">📄 Ver</a>
+        <button class="descargar" onclick="window.open('URL_DEL_DOCUMENTO_3', '_blank')">⬇️ Descargar</button>
+      </div>
+    </div>
+  
+    <div class="documento-ficha arte show">
+      <img src="Diagnóstico Artes plásticas.jpg" alt="Diagnóstico Artes Plásticas">
+      <div class="contenido">
+        <h2>Diagnóstico Artes Plásticas - Santo Domingo</h2>
+        <p><strong>Docente:</strong> Leydy Diaz</p>
+        <p><strong>Centro:</strong> Santo Domingo</p>
+        <p><strong>Resumen:</strong> [Resumen...]</p>
+        <a href="URL_DEL_DOCUMENTO_3" target="_blank">📄 Ver</a>
+        <button class="descargar" onclick="window.open('URL_DEL_DOCUMENTO_3', '_blank')">⬇️ Descargar</button>
+      </div>
+    </div>
+  
+    <!-- San Juan de Dios -->
+    <div class="documento-ficha arte show">
+      <img src="Diagnóstico Artes plásticas.jpg" alt="Diagnóstico Artes Plásticas">
+      <div class="contenido">
+        <h2>Diagnóstico Artes Plásticas - San Juan de Dios</h2>
+        <p><strong>Docente:</strong> Catalina Amaya</p>
+        <p><strong>Centro:</strong> San Juan de Dios</p>
+        <p><strong>Resumen:</strong> [Resumen...]</p>
+        <a href="URL_DEL_DOCUMENTO_3" target="_blank">📄 Ver</a>
+        <button class="descargar" onclick="window.open('URL_DEL_DOCUMENTO_3', '_blank')">⬇️ Descargar</button>
+      </div>
+    </div>
+  
+    <!-- GMMMC -->
+    <div class="documento-ficha danza show">
+      <img src="Diagnóstico Danzas.jpg" alt="Diagnóstico Danzas">
+      <div class="contenido">
+        <h2>Diagnóstico Danzas - GMMMC</h2>
+        <p><strong>Docente:</strong> María Alejandra López</p>
+        <p><strong>Centro:</strong> GMMMC</p>
+        <p><strong>Resumen:</strong> [Resumen...]</p>
+        <a href="URL_DEL_DOCUMENTO_3" target="_blank">📄 Ver</a>
+        <button class="descargar" onclick="window.open('URL_DEL_DOCUMENTO_3', '_blank')">⬇️ Descargar</button>
+      </div>
+    </div>
+  
+    <div class="documento-ficha arte show">
+      <img src="Diagnóstico Artes plásticas.jpg" alt="Diagnóstico Artes Plásticas">
+      <div class="contenido">
+        <h2>Diagnóstico Artes Plásticas - GMMMC</h2>
+        <p><strong>Docente:</strong> María Alejandra López</p>
+        <p><strong>Centro:</strong> GMMMC</p>
+        <p><strong>Resumen:</strong> [Resumen...]</p>
+        <button class="descargar" onclick="window.open('URL_DEL_DOCUMENTO_3', '_blank')">⬇️ Descargar</button>
+      </div>
+    </div>
+  
+    <div class="documento-ficha porras show">
+      <img src="Diagnóstico Porras.jpg" alt="Diagnóstico Porras">
+      <div class="contenido">
+        <h2>Diagnóstico Porras - GMMMC</h2>
+        <p><strong>Docente:</strong> Natalia Moreno</p>
+        <p><strong>Centro:</strong> GMMMC</p>
+        <p><strong>Resumen:</strong> [Resumen...]</p>
+        <button class="descargar" onclick="window.open('URL_DEL_DOCUMENTO_3', '_blank')">⬇️ Descargar</button>
+      </div>
+    </div>
+  
+  </div>  
+
+<footer>
+  © 2025 Musicala. Todos los derechos reservados.
+</footer>
+
+<script>
+  // Animación de entrada
+  document.querySelectorAll('.documento-ficha').forEach((el, i) => {
+    setTimeout(() => el.classList.add('show'), 100 * i);
+  });
+
+  // Filtros por categoría
+  document.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+
+      const filtro = btn.dataset.filtro;
+      document.querySelectorAll('.documento-ficha').forEach(card => {
+        if (filtro === 'todos' || card.classList.contains(filtro)) {
+          card.style.display = 'flex';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    });
+  });
+</script>
+
+</body>
+</html>
